@@ -2,17 +2,14 @@ function sysCall_init()
     antBase=sim.getObjectHandle('hexa_legBase')
     legTips={-1,-1,-1,-1,-1,-1}
     legTargets={-1,-1,-1,-1,-1,-1}
-
     for i=1,6,1 do
         legTips[i]=sim.getObjectHandle('hexa_footTip'..i-1)
         legTargets[i]=sim.getObjectHandle('hexa_footTarget'..i-1)
     end
-
     initialPos={nil,nil,nil,nil,nil,nil}
     for i=1,6,1 do
         initialPos[i]=sim.getObjectPosition(legTips[i],antBase)
     end
-
     legMovementIndex={1,4,2,6,3,5}
     stepProgression=0
     stepVelocity=0.5
@@ -67,10 +64,9 @@ function sysCall_actuation()
                 end
             end
         end
-
-        md = movementDirection + math.abs(rotation) * math.atan2(initialPos[leg][1]*rotation,-initialPos[leg][2]*rotation)
-        offset2 = { offset[1] * math.cos(md) * realMovementStrength, offset[1] * math.sin(md) * realMovementStrength, offset[3] * realMovementStrength }
-        p = { initialPos[leg][1] + offset2[1], initialPos[leg][2] + offset2[2] ,initialPos[leg][3] + offset2[3] }
+        md=movementDirection+math.abs(rotation)*math.atan2(initialPos[leg][1]*rotation,-initialPos[leg][2]*rotation)
+        offset2={offset[1]*math.cos(md)*realMovementStrength,offset[1]*math.sin(md)*realMovementStrength,offset[3]*realMovementStrength}
+        p={initialPos[leg][1]+offset2[1],initialPos[leg][2]+offset2[2],initialPos[leg][3]+offset2[3]}
         sim.setObjectPosition(legTargets[leg],antBase,p) -- We simply set the desired foot position. IK is implicitely handled after that (in the default main script). You could also explicitely handle IK for this foot with sim.handleIkGroup()
     end
     
