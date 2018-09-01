@@ -3,11 +3,12 @@ function sysCall_init()
     legTargets = {-1, -1, -1, -1, -1, -1}
     numberOfLegs = 6
 
-    legMovementIndex = {1, 4, 2, 6, 3, 5}
+    -- legMovementIndex = {1, 4, 2, 6, 3, 5}
+    legMovementIndex = {1, 2, 3, 4, 5, 6}
     stepProgression = 0
     stepVelocity = 0.5
     stepAmplitude = 0.16
-    stepHeight = 0.5
+    stepHeight = 0.04
     movementStrength = 1
     realMovementStrength = 0
     movementDirection = (0 * math.pi) / 180
@@ -48,7 +49,7 @@ function sysCall_actuation()
     end
     realMovementStrength = realMovementStrength + dx
 
-    for leg = 1, numberOfLegs, 1 do
+    for leg = 1, 1, 1 do
         sp = (stepProgression + (legMovementIndex[leg] - 1) / 6) % 1
         offset = {0, 0, 0}
         if (sp < (1 / 3)) then
@@ -78,7 +79,9 @@ function sysCall_actuation()
             offset[3] * realMovementStrength
         }
         p = {initialPos[leg][1] + offset2[1], initialPos[leg][2] + offset2[2], initialPos[leg][3] + offset2[3]}
-        sim.setObjectPosition(legTargets[leg], antBase, p) -- We simply set the desired foot position. IK is implicitely handled after that (in the default main script). You could also explicitely handle IK for this foot with sim.handleIkGroup()
+        sim.setObjectPosition(legTargets[leg], antBase, p)
+        
+        -- We simply set the desired foot position. IK is implicitely handled after that (in the default main script). You could also explicitely handle IK for this foot with sim.handleIkGroup()
     end
 
     stepProgression = stepProgression + dt * stepVelocity
